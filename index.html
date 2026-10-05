@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Francesca Ritchey</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #ffffff;
+    --off: #f7f7f5;
+    --light: #e8e8e4;
+    --mid: #b0afa8;
+    --dark: #2a2a28;
+    --black: #111110;
+    --accent: #3a3a38;
+    --nav-w: 120px;
+    --header-h: 64px;
+  }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--white);
+    color: var(--black);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--white);
+    border-bottom: 1px solid var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 100;
+  }
+
+  .site-name {
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    color: var(--black);
+    cursor: pointer;
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .social-icons a {
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 18px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .social-icons a:hover { opacity: 1; }
+
+  /* SVG icons inline */
+  .icon { width: 20px; height: 20px; fill: var(--dark); }
+
+  /* ─── LAYOUT ─── */
+  .layout {
+    display: flex;
+    padding-top: var(--header-h);
+    min-height: 100vh;
+  }
+
+  /* ─── SIDEBAR NAV ─── */
+  nav {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    width: var(--nav-w);
+    height: calc(100vh - var(--header-h));
+    border-right: 1px solid var(--light);
+    padding-top: 16px;
+    background: var(--white);
+    z-index: 90;
+  }
+
+  nav ul { list-style: none; }
+
+  nav ul li { position: relative; }
+
+  nav ul li a {
+    display: block;
+    padding: 9px 14px;
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--dark);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-left: 2px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  nav ul li a:hover,
+  nav ul li a.active {
+    background: var(--light);
+    border-left-color: var(--black);
+  }
+
+  /* Submenu */
+  .submenu {
+    display: none;
+    position: absolute;
+    left: var(--nav-w);
+    top: 0;
+    background: var(--white);
+    border: 1px solid var(--light);
+    min-width: 130px;
+    z-index: 200;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .submenu li a {
+    font-size: 11px;
+    padding: 8px 14px;
+    border-left: none;
+    white-space: nowrap;
+  }
+
+  .submenu li a:hover,
+  .submenu li a.active-sub {
+    background: var(--light);
+    border-left: none;
+  }
+
+  nav ul li:hover .submenu { display: block; }
+
+  /* ─── MAIN CONTENT ─── */
+  main {
+    margin-left: var(--nav-w);
+    padding: 28px 32px;
+    flex: 1;
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* ─── PAGES ─── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── LANDING / GALLERY ─── */
+  .masonry {
+    columns: 4;
+    column-gap: 6px;
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 6px;
+    background: var(--light);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  /* Placeholder image boxes with X */
+  .img-placeholder {
+    width: 100%;
+    display: block;
+    background: var(--light);
+    position: relative;
+  }
+
+  .img-placeholder::after {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+
+  .img-placeholder svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  /* Vary heights for masonry feel */
+  .masonry-item:nth-child(3n+1) .img-placeholder::after { padding-top: 130%; }
+  .masonry-item:nth-child(3n+2) .img-placeholder::after { padding-top: 75%; }
+  .masonry-item:nth-child(3n)   .img-placeholder::after { padding-top: 110%; }
+
+  .masonry-item:hover .img-placeholder { opacity: 0.85; }
+  .masonry-item { transition: opacity 0.2s; }
+
+  /* ─── SOBRE MÍ ─── */
+  .sobre-mi {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    padding: 8px 0;
+    max-width: 820px;
+  }
+
+  .sobre-mi-text {
+    padding-top: 4px;
+  }
+
+  .sobre-mi-text p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--dark);
+    max-width: 38ch;
+  }
+
+  .sobre-mi-photo .img-placeholder::after { padding-top: 125%; }
+
+  /* ─── PROYECTO ─── */
+  .project-header {
+    margin-bottom: 20px;
+  }
+
+  .project-header h2 {
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .project-header p {
+    font-size: 13px;
+    color: var(--mid);
+    max-width: 60ch;
+    line-height: 1.6;
+  }
+
+  /* ─── CONTACTO ─── */
+  .contact-page {
+    max-width: 480px;
+    padding-top: 8px;
+  }
+
+  .contact-page h2 {
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+
+  .contact-page p {
+    font-size: 14px;
+    color: var(--dark);
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+
+  .contact-page a {
+    color: var(--black);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ─── PLACEHOLDER SVG ─── */
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <span class="site-name" onclick="showPage('landing')">Francesca Ritchey</span>
+  <div class="social-icons">
+    <a href="#" title="Instagram">
+      <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+      </svg>
+    </a>
+    <a href="#" title="X / Twitter">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </a>
+    <a href="#" title="Facebook">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    </a>
+  </div>
+</header>
+
+<!-- SIDEBAR NAV -->
+<nav>
+  <ul>
+    <li><a href="#" onclick="showPage('sobre-mi'); return false;" id="nav-sobre-mi">Sobre mí</a></li>
+    <li>
+      <a href="#" onclick="showPage('proyectos','Autopsy'); return false;" id="nav-proyectos">Proyectos</a>
+      <ul class="submenu" id="submenu-proyectos">
+        <li><a href="#" onclick="showPage('proyectos','H2O'); return false;" id="sub-H2O">H2O</a></li>
+        <li><a href="#" onclick="showPage('proyectos','Autopsy'); return false;" id="sub-Autopsy" class="active-sub">Autopsy</a></li>
+        <li><a href="#" onclick="showPage('proyectos','Graffiti'); return false;" id="sub-Graffiti">Graffiti</a></li>
+        <li><a href="#" onclick="showPage('proyectos','Urban'); return false;" id="sub-Urban">Urban</a></li>
+        <li><a href="#" onclick="showPage('proyectos','Color'); return false;" id="sub-Color">Color</a></li>
+        <li><a href="#" onclick="showPage('proyectos','B&W'); return false;" id="sub-BW">B&W</a></li>
+      </ul>
+    </li>
+    <li><a href="#" onclick="showPage('retratos'); return false;" id="nav-retratos">Retratos</a></li>
+    <li><a href="#" onclick="showPage('producto'); return false;" id="nav-producto">Producto</a></li>
+    <li><a href="#" onclick="showPage('gastronomica'); return false;" id="nav-gastronomica">Gastronómica</a></li>
+    <li><a href="#" onclick="showPage('contacto'); return false;" id="nav-contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<div class="layout">
+  <main>
+
+    <!-- LANDING -->
+    <div class="page active" id="page-landing">
+      <div class="masonry" id="masonry-landing"></div>
+    </div>
+
+    <!-- SOBRE MÍ -->
+    <div class="page" id="page-sobre-mi">
+      <div class="sobre-mi">
+        <div class="sobre-mi-text">
+          <p>Hi, my name is Francesca Ritchey. I am a Mexico City based photographer specializing in projects, portraits, product, and gastronomic photography.</p>
+        </div>
+        <div class="sobre-mi-photo">
+          <div class="img-placeholder"><?= placeholder() ?></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROYECTOS -->
+    <div class="page" id="page-proyectos">
+      <div class="project-header">
+        <h2 id="project-title">Autopsy</h2>
+        <p id="project-desc">This project is a visual way of conveying ...</p>
+      </div>
+      <div class="masonry" id="masonry-project"></div>
+    </div>
+
+    <!-- RETRATOS -->
+    <div class="page" id="page-retratos">
+      <div class="project-header">
+        <h2>Retratos</h2>
+        <p>Portrait photography series.</p>
+      </div>
+      <div class="masonry" id="masonry-retratos"></div>
+    </div>
+
+    <!-- PRODUCTO -->
+    <div class="page" id="page-producto">
+      <div class="project-header">
+        <h2>Producto</h2>
+        <p>Product photography.</p>
+      </div>
+      <div class="masonry" id="masonry-producto"></div>
+    </div>
+
+    <!-- GASTRONÓMICA -->
+    <div class="page" id="page-gastronomica">
+      <div class="project-header">
+        <h2>Gastronómica</h2>
+        <p>Gastronomic photography.</p>
+      </div>
+      <div class="masonry" id="masonry-gastronomica"></div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div class="page" id="page-contacto">
+      <div class="contact-page">
+        <h2>Contacto</h2>
+        <p>Mexico City, México</p>
+        <p><a href="mailto:hello@francescaritchey.com">hello@francescaritchey.com</a></p>
+        <p>Available for commissions and collaborations.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // ─── PLACEHOLDER SVG generator ───
+  function makePlaceholder() {
+    const div = document.createElement('div');
+    div.className = 'img-placeholder';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 100 100');
+    svg.setAttribute('preserveAspectRatio','none');
+    svg.innerHTML = `
+      <rect width="100" height="100" fill="#e8e8e4"/>
+      <line x1="0" y1="0" x2="100" y2="100" stroke="#c0bfb8" stroke-width="1"/>
+      <line x1="100" y1="0" x2="0" y2="100" stroke="#c0bfb8" stroke-width="1"/>
+      <rect x="0" y="0" width="100" height="100" fill="none" stroke="#c0bfb8" stroke-width="1"/>
+    `;
+    div.appendChild(svg);
+    return div;
+  }
+
+  function buildMasonry(containerId, count) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const item = document.createElement('div');
+      item.className = 'masonry-item';
+      item.appendChild(makePlaceholder());
+      container.appendChild(item);
+    }
+  }
+
+  // Build galleries
+  buildMasonry('masonry-landing', 16);
+  buildMasonry('masonry-project', 14);
+  buildMasonry('masonry-retratos', 12);
+  buildMasonry('masonry-producto', 10);
+  buildMasonry('masonry-gastronomica', 11);
+
+  // Fix sobre-mi placeholder
+  document.querySelector('.sobre-mi-photo .img-placeholder').replaceWith(makePlaceholder());
+  document.querySelector('.sobre-mi-photo').appendChild(makePlaceholder());
+
+  // ─── NAVIGATION ───
+  const projectDescriptions = {
+    'H2O':     'An exploration of water in the urban environment of Mexico City.',
+    'Autopsy': 'This project is a visual way of conveying ...',
+    'Graffiti':'Street art and graffiti across Latin America.',
+    'Urban':   'Urban life and architecture in Mexico City.',
+    'Color':   'A study of color in everyday scenes.',
+    'B&W':     'Black and white street photography series.',
+  };
+
+  function clearActiveNav() {
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.querySelectorAll('.submenu a').forEach(a => a.classList.remove('active-sub'));
+  }
+
+  function showPage(pageId, subproject) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    clearActiveNav();
+
+    if (pageId === 'landing') {
+      document.getElementById('page-landing').classList.add('active');
+      return;
+    }
+
+    const page = document.getElementById('page-' + pageId);
+    if (page) page.classList.add('active');
+
+    // Activate nav item
+    const navEl = document.getElementById('nav-' + pageId);
+    if (navEl) navEl.classList.add('active');
+
+    // Handle subproject for proyectos
+    if (pageId === 'proyectos' && subproject) {
+      document.getElementById('project-title').textContent = subproject;
+      document.getElementById('project-desc').textContent = projectDescriptions[subproject] || '';
+      // Activate submenu item
+      const subKey = subproject === 'B&W' ? 'BW' : subproject;
+      const subEl = document.getElementById('sub-' + subKey);
+      if (subEl) subEl.classList.add('active-sub');
+      buildMasonry('masonry-project', 12 + Math.floor(Math.random()*4));
+    }
+  }
+</script>
+</body>
+</html>
