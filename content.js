@@ -57,7 +57,7 @@ const SITE = {
   ],
 
   about: {
-    portrait: '',   // for example 'images/portrait.jpg'
+    portrait: 'aboutme.jpg',   // for example 'images/portrait.jpg'
     es: [
       'Francesca Ritchey Chauvet es una fotógrafa mexicana- americana que actualmente radica en CDMX. Se graduó como comunicóloga de la Universidad Anáhuac Norte su fascinación por la fotografía la llevó después a estudiar en el prestigiado colegio de Maine Media College en Rockport, Maine, EUA en donde comenzó su carrera formal como fotógrafa.',
       'Inició su trayectoria artística por la necesidad de expresarse y comprender sus experiencias y su entorno. A través de la fotografía, invita a contemplar el mundo y a confrontar nuestro universo interior. Artistas como Carter Bresson, Mayer, Adams y Salgado la han inspirado a explorar las calles en busca del fascinante caos de las grandes ciudades. En el paisaje, aprecia el carácter efímero de cada instante y encuentra una forma de meditación silenciosa que la conecta consigo misma.',
